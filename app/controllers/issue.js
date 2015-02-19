@@ -14,12 +14,12 @@ function convertmongoIssue(issue) {
     return {
                 tag:issue.tag,
                 status:issue.status,
-                desc: iissue.desc,
-                date: iissue.date,
-                userId:iissue.userId,
-                issueTypeId:iissue.issueTypeId,
-                geoDataId:iissue.geoDataId,
-                commentId:iissue.commentId
+                desc: issue.desc,
+                date: issue.date,
+                userId:issue.user,
+                issueTypeId:issue.issueTypeId,
+                geoDataId:issue.geoDataId,
+                commentId:issue.commentId
     }
 }
 
@@ -40,12 +40,13 @@ router.route('/')
                 status: req.body.status,
                 desc: req.body.desc,
                 date: req.body.date,
-                userId:req.body.userId,
+                user:req.body.userId, // je lui donne un user en entier?
                 issueTypeId:req.body.issueTypeId,
                 geoDataId:req.body.geoDataId,
                 commentId:req.body.commentId
                 
             });
+            
 
             issue.save(function (err, issuseSaved) {
                 res.status(201).json(convertmongoIssue(issuseSaved));
