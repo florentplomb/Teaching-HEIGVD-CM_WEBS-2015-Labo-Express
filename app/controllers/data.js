@@ -3,7 +3,9 @@ var
 	express = require('express'),
   router = express.Router(),
   mongoose = require('mongoose'),
-	User = mongoose.model('User');
+	User = mongoose.model('User'),
+	IssueType = mongoose.model('IssueType');
+
 
 module.exports = function (app) {
   app.use('/api/data', router);
@@ -53,6 +55,15 @@ var issueStates = [
 	'rejected'
 ];
 
+var shortnames = [
+	'broken streetlight',
+	'dangerous crossroad',
+	'graffiti',
+	'broken road',
+	'racist graffiti',
+	'dangerous population'
+];
+
 var users = null;
 var citizen = null;
 var staff = null;
@@ -79,30 +90,23 @@ function generateTags() {
 	return _.uniq(data);
 }
 
-function populateIssues(res) {
-	var creationDate = randomDate(new Date(2012, 0, 1), new Date(2015, 6, 1));
-
-	var data = [];
-	for (var i = 0; i < 100; i++) {
-		data.push({
-			// TODO: Implement the issue random generation
-		});
-	}
-
-	// TODO: Replace the collection save by the correct call corresponding to your model
-	//Issue.create(data, function(err) {
-	//	issues = Array.prototype.slice.call(arguments, 1);
-	//	res.status(200).end();
-	//});
-}
-
 function populateIssueTypes(res) {
 	// TODO: Implement the issue type generation
-	//IssueType.create(issueTypeData, function(err) {
-	//	issueTypes = Array.prototype.slice.call(arguments, 1);
-	//
-	//	populateIssues(res);
-	//});
+
+	var data = [];
+	for (var i = 0; i < 10; i++) {
+		data.push({
+			// TODO: Implement the issuetype random generation
+			name: shortnames[randomInt(0, shortnames.length)],
+			desc: descriptionsAndComments[randomInt(0, descriptionsAndComments.length)]
+		});
+	}
+	
+	IssueType.create(data, function(err) {
+		issueTypes = Array.prototype.slice.call(arguments, 1);
+	
+		res.status(200).end();
+	});
 }
 
 function populateUsers(res) {
@@ -135,14 +139,23 @@ function populateUsers(res) {
 		});
 
 		// TODO: Call other generators as Mongoose is ASYNC and requires callbacks
-		//populateIssueTypes(res);
-		res.end();
+		populateIssueTypes(res);
 	})
 }
 
 router.route('/populate')
 	.post(function(req, res, next) {
-		User.find().remove(function(err) {
-			populateUsers(res);
+		IssueType.find().remove(function(err) {
+			User.find().remove(function(err) {
+				populateUsers(res);
+			});
+		});
+	})
+
+
+router.route('/populateissueType')
+	.post(function(req, res, next) {
+		IssueType.find().remove(function(err) {
+                populateIssueTypes(res);
 		});
 	})

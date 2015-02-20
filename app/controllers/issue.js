@@ -42,9 +42,9 @@ router.route('/')
                 desc: req.body.desc,
                 date: req.body.date,
                 user:req.body.userId, // je lui donne un user en entier?
-                issueTypeId:req.body.issueTypeId,
-                geoDataId:req.body.geoDataId,
-                commentId:req.body.commentId
+                issueType:req.body.issueTypeId,
+                geoData:req.body.geoDataId,
+                comment:req.body.commentId
                 
             });
             
@@ -68,10 +68,10 @@ router.route('/:id')
                 issue.status = req.body.status;
                 issue.desc = req.body.desc;
                 issue.date = req.body.date;
-                issue.userId = req.body.userId;
-                issue.issueTypeId = req.body.issueTypeId;
-                issue.geoDataId = req.body.geoDataId;
-                issue.commentId = req.body.commentId;
+                issue.user = req.body.userId;
+                issue.issueType = req.body.issueTypeId;
+                issue.geoData = req.body.geoDataId;
+                issue.comment = req.body.commentId;
 
                 user.save(function (err, issueSaved) {
                     res.json(convertmongoIssue(issueSaved));
