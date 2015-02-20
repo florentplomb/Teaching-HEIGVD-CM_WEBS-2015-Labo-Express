@@ -185,6 +185,7 @@ router.route('/populateissueType')
 		IssueType.find().remove(function(err) {
                 populateIssueTypes(res);
 		});
+<<<<<<< Updated upstream
 	})
 router.route('/populateComment')
 	.post(function(req, res, next) {
@@ -192,3 +193,6 @@ router.route('/populateComment')
                 populateComment(res);
 		});
 	})
+=======
+	});
+>>>>>>> Stashed changes
