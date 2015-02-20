@@ -8,8 +8,9 @@ var IssueSchema = new Schema({
                 date: Date,
                 issueType:{type:Schema.Types.ObjectId, ref: "issueType"},
                 user:{type:Schema.Types.ObjectId, ref: "user"},             
-                geoData:{type:Schema.Types.ObjectId, ref: "GeoData"}, 
-                comment:{type:Schema.Types.ObjectId, ref: "Comment"}
+                lg: String,
+                lat: String,
+                comment:{type:Schema.Types.ObjectId, ref: "comment"}
 	
 });
 
