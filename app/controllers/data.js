@@ -135,6 +135,16 @@ function populateComment(res) {
 	});
 }
 
+function populateTag(res) {
+	var data = [];
+	for (var i = 0; i < 15; i++) {
+		data.push({
+			 
+			tag: generateTags(),
+                        date: randomDate(new Date(2000,01,01),new Date(2015,01,01))
+		});
+	}
+        }
 
 function populateUsers(res) {
 	var data = [];
@@ -167,8 +177,8 @@ function populateUsers(res) {
 
 		// TODO: Call other generators as Mongoose is ASYNC and requires callbacks
 		populateIssueTypes(res);
-	})
-}
+	});
+};
 
 router.route('/populate')
 	.post(function(req, res, next) {
@@ -194,6 +204,14 @@ router.route('/populateComment')
 	.post(function(req, res, next) {
 		Comment.find().remove(function(err) {
                 populateComment(res);
+		});
+
+	});
+
+router.route('/populateTag')
+	.post(function(req, res, next) {
+		Tag.find().remove(function(err) {
+                populateTag(res);
 		});
 
 	})

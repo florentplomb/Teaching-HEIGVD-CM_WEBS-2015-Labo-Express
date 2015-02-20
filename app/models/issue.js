@@ -2,15 +2,15 @@ var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
 var IssueSchema = new Schema({
-                tag: String,
                 status: String,
                 desc: String,
                 date: Date,
-                issueType:{type:Schema.Types.ObjectId, ref: "issueType"},
-                user:{type:Schema.Types.ObjectId, ref: "user"},             
                 lg: String,
                 lat: String,
-                comment:{type:Schema.Types.ObjectId, ref: "comment"}
+                user:{type:Schema.Types.ObjectId, ref: "User"},
+                tag:[{type:Schema.Types.ObjectId, ref: "Tag"}],
+                issueType:[{type:Schema.Types.ObjectId, ref: "IssueType"}],       
+                comment:[{type:Schema.Types.ObjectId, ref: "Comment"}]
 	
 });
 

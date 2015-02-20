@@ -4,73 +4,98 @@ var
         router = express.Router(),
         mongoose = require('mongoose'),
         Issue = mongoose.model('Issue');
-        // Action = mongoose.model('Action'); Peut-être besoins pour issuse/id/action ???
+        IssueType = mongoose.model('IssueType');
+        User = mongoose.model('User');
+// Action = mongoose.model('Action'); Peut-être besoins pour issuse/id/action ???
 
 module.exports = function (app) {
     app.use('/api/issues', router);
 };
 
-function convertmongoIssue(issue) {
+function convertMongoIssue(issue) {
     //return user.toObject({ transform: true })
     return {
-                tag:issue.tag,
-                status:issue.status,
-                desc: issue.desc,
-                date: issue.date,
-                userId:issue.user,
-                issueTypeId:issue.issueTypeId,
-                geoDataId:issue.geoDataId,
-                commentId:issue.commentId
+        tag: issue.tag,
+        status: issue.status,
+        desc: issue.desc,
+        date: issue.date,
+        lg: issue.lg,
+        lat: issue.lat,
+        user: issue.user,
+        issueType: issue.issueType,
+        geoData: issue.geoData,
+        comment: issue.comment
     }
 }
 
 router.route('/')
-        .get(function (req, res, next) {
-            Issue.find(function (err, issue) {
-                if (err)
-                    return next(err);
-                res.json(_.map(issue, function (issue) {
-                    return convertMongoIssue(issue);
-                }));
-            });
-        })
+//  .get(function (req, res, next) {
+//            Issue.find(function (err, issues) {
+//                if (err)
+//                    return next(err);
+//                res.json(_.map(issues, function (issue) {
+//                    return convertMongoIssue(issue);
+//                }));
+//            });
+//        })
 
+
+        .get(function (req, res, next) {
+            Issue.find()
+                    .populate('user issueType comment')
+                    .exec(function (err, issues) {
+                        if (err)
+                            return next(err);
+                        res.json(_.map(issues, function (issue) {
+                           
+                            return convertMongoIssue(issue);
+                        }));
+                    });
+                    
+
+        })
+  
         .post(function (req, res, next) {
             var issue = new Issue({
                 tag: req.body.tag,
                 status: req.body.status,
                 desc: req.body.desc,
                 date: req.body.date,
-                user:req.body.userId, // je lui donne un user en entier?
-                issueType:req.body.issueTypeId,
-                geoData:req.body.geoDataId,
-                comment:req.body.commentId
-                
+                lg: req.body.lg,
+                lat: req.body.lat,
+                user: req.body.userId,
+                issueType: req.body.issueTypeId,
+                comment: req.body.commentId
+
             });
-            
+
 
             issue.save(function (err, issuseSaved) {
-                res.status(201).json(convertmongoIssue(issuseSaved));
+                    console.log(err);
+                  if(err) return next(err);
+                    res.status(201).json(convertMongoIssue(issuseSaved));
+              
             });
         });
 
 router.route('/:id')
         .get(function (req, res, next) {
             Issue.findById(req.params.id, function (err, issue) {
-                res.json(convertmongoIssue(issue));
+                res.json(convertMongoIssue(issue));
             });
         })
 
         .put(function (req, res, next) {
-            Issue.findById(req.params.id, function (err, user) {             
-               
+            Issue.findById(req.params.id, function (err, user) {
+
                 issue.tag = req.body.tag;
                 issue.status = req.body.status;
                 issue.desc = req.body.desc;
                 issue.date = req.body.date;
+                issue.lg = req.body.lg;
+                issue.lat = req.body.lat;
                 issue.user = req.body.userId;
                 issue.issueType = req.body.issueTypeId;
-                issue.geoData = req.body.geoDataId;
                 issue.comment = req.body.commentId;
 
                 user.save(function (err, issueSaved) {
@@ -84,25 +109,25 @@ router.route('/:id')
                 res.status(204).end();
             });
         });
-        
+
 router.route('/:id/action')
 
-	.post(function (req, res, next) {
-		var action = new Action({
-			type: req.body.type,
-			date: req.body.date,
-                        desc: req.body.desc,
-                        empl: req.body.empl
-                        
-		});
+        .post(function (req, res, next) {
+            var action = new Action({
+                type: req.body.type,
+                date: req.body.date,
+                desc: req.body.desc,
+                empl: req.body.empl
 
-		action.save(function(err, actionSaved) {
-			res.status(201).json(convertMongoAction(actionSaved));
-		});
-	})
-        
-        .get(function(req, res, next) {
-		Action.findById(req.params.id, function(err, action) {
-			res.json(convertMongoAction(action));
-		});
-	});
+            });
+
+            action.save(function (err, actionSaved) {
+                res.status(201).json(convertMongoAction(actionSaved));
+            });
+        })
+
+        .get(function (req, res, next) {
+            Action.findById(req.params.id, function (err, action) {
+                res.json(convertMongoAction(action));
+            });
+        });
