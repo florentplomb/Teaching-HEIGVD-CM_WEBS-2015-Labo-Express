@@ -129,7 +129,7 @@ function populateComment(res) {
 	}
 	
 	Comment.create(data, function(err) {
-		Comment = Array.prototype.slice.call(arguments, 1);
+		comment = Array.prototype.slice.call(arguments, 1);
 	
 		res.status(200).end();
 	});
@@ -196,6 +196,6 @@ router.route('/populateComment')
                 populateComment(res);
 		});
 
-	});
+	})
 
 	
