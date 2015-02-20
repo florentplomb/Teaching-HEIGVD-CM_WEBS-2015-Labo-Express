@@ -4,6 +4,7 @@ var
         router = express.Router(),
         mongoose = require('mongoose'),
         Issue = mongoose.model('Issue');
+        // Action = mongoose.model('Action'); Peut-être besoins pour issuse/id/action ???
 
 module.exports = function (app) {
     app.use('/api/issues', router);
@@ -83,3 +84,25 @@ router.route('/:id')
                 res.status(204).end();
             });
         });
+        
+router.route('/:id/action')
+
+	.post(function (req, res, next) {
+		var action = new Action({
+			type: req.body.type,
+			date: req.body.date,
+                        desc: req.body.desc,
+                        empl: req.body.empl
+                        
+		});
+
+		action.save(function(err, actionSaved) {
+			res.status(201).json(convertMongoAction(actionSaved));
+		});
+	})
+        
+        .get(function(req, res, next) {
+		Action.findById(req.params.id, function(err, action) {
+			res.json(convertMongoAction(action));
+		});
+	});
