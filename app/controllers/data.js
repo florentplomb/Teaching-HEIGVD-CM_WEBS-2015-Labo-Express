@@ -185,14 +185,17 @@ router.route('/populateissueType')
 		IssueType.find().remove(function(err) {
                 populateIssueTypes(res);
 		});
+
                 });
+
+
 
 router.route('/populateComment')
 	.post(function(req, res, next) {
 		Comment.find().remove(function(err) {
                 populateComment(res);
 		});
-	})
+
+	});
 
 	
-
