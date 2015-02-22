@@ -187,7 +187,7 @@ function populateUsers(res) {
 	});
 };
 
-router.route('/populate')
+router.route('/populateuser')
 	.post(function(req, res, next) {
 		IssueType.find().remove(function(err) {
 			User.find().remove(function(err) {
@@ -197,7 +197,7 @@ router.route('/populate')
 	});
 
 
-router.route('/populateissueType')
+router.route('/populateissuetype')
 	.post(function(req, res, next) {
 		IssueType.find().remove(function(err) {
                 populateIssueTypes(res);
@@ -206,16 +206,18 @@ router.route('/populateissueType')
                 });
 
 
+// N'est pas initialisée car les auteur des comments sont des "users" et je n'ai pas implémenté la fonction pour qu'il recupère les id
+// de users exsitant et qu'il genère des comments autmatiquement ... 
 
-router.route('/populateComment')
-	.post(function(req, res, next) {
-		Comment.find().remove(function(err) {
-                populateComment(res);
-		});
+//router.route('/populatecomment')
+//	.post(function(req, res, next) {
+//		Comment.find().remove(function(err) {
+//                populateComment(res);
+//		});
+//
+//	});
 
-	});
-
-router.route('/populateTag')
+router.route('/populatetag')
 	.post(function(req, res, next) {
 		Tag.find().remove(function(err) {
                 populateTag(res);

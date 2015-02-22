@@ -66,6 +66,6 @@ router.route('/:id')
 
         .delete(function (req, res, next) {
             User.findByIdAndRemove(req.params.id, function (err) {
-                res.status(204).end();
+                    res.status(204).end();
             });
         });

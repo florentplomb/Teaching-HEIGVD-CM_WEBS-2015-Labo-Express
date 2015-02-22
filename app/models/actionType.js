@@ -1,11 +1,9 @@
 var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
-var ActionSchema = new Schema({
-    type:{type:Schema.Types.ObjectId, ref: "ActionType"},
-    date: Date,
-    desc: String,
-    user:{type:Schema.Types.ObjectId, ref: "User"}
+var ActionTypeSchema = new Schema({
+    type: String,
+    desc: String
 });
 
 
@@ -27,4 +25,4 @@ var ActionSchema = new Schema({
 
 
 
-mongoose.model('Action', ActionSchema);
+mongoose.model('ActionType', ActionTypeSchema);

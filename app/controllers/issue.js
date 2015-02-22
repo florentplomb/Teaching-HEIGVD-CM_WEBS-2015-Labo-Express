@@ -31,16 +31,6 @@ function convertMongoIssue(issue) {
 }
 
 router.route('/')
-//  .get(function (req, res, next) {
-//            Issue.find(function (err, issues) {
-//                if (err)
-//                    return next(err);
-//                res.json(_.map(issues, function (issue) {
-//                    return convertMongoIssue(issue);
-//                }));
-//            });
-//        })
-
 
         .get(function (req, res, next) {
             Issue.find()
@@ -94,22 +84,22 @@ router.route('/:id')
 
                 })
             
-
+         // Specific Issue update 
+         // Utile de tester si une valeur n'est pas puté , on prend l'ancienne valeur?
 
         .put(function (req, res, next) {
-            Issue.findById(req.params.id, function (err, user) {
+            Issue.findById(req.params.id, function (err, issue) {
 
                 issue.tag = req.body.tag;
                 issue.status = req.body.status;
                 issue.desc = req.body.desc;
-                issue.date = req.body.date;
                 issue.geoData = req.body.geoData
                 issue.user = req.body.userId;
                 issue.issueType = req.body.issueTypeId;
                 issue.comment = req.body.commentId;
 
-                user.save(function (err, issueSaved) {
-                    res.json(convertmongoIssue(issueSaved));
+                issue.save(function (err, issueSaved) {
+                    res.json(convertMongoIssue(issueSaved));
                 });
             });
         })
