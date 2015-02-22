@@ -6,6 +6,7 @@ var
 	User = mongoose.model('User'),
 	IssueType = mongoose.model('IssueType');
         Comment = mongoose.model('Comment');
+        Tag = mongoose.model('Tag');
 
 
 module.exports = function (app) {
@@ -120,7 +121,7 @@ function populateComment(res) {
 	for (var i = 0; i < 10; i++) {
 		data.push({
 			// TODO: Implement the issuetype random generation
-			author: shortnames[randomInt(0, shortnames.length)],		
+			author: firstnames[randomInt(0, firstnames.length)] +" "+lastnames[randomInt(0, lastnames.length)],		
                         content: descriptionsAndComments[randomInt(0, descriptionsAndComments.length)],
                         date: randomDate(new Date(2000,01,01),new Date(2015,01,01))
                         
@@ -128,7 +129,7 @@ function populateComment(res) {
                 
 	}
 	
-	Comment.create(data, function(err) {
+                Comment.create(data, function(err) {
 		comment = Array.prototype.slice.call(arguments, 1);
 	
 		res.status(200).end();
@@ -140,10 +141,16 @@ function populateTag(res) {
 	for (var i = 0; i < 15; i++) {
 		data.push({
 			 
-			tag: generateTags(),
+			desc: generateTags(),
                         date: randomDate(new Date(2000,01,01),new Date(2015,01,01))
 		});
 	}
+                Tag.create(data, function(err) {
+		tag = Array.prototype.slice.call(arguments, 1);
+	
+		res.status(200).end();
+        
+        });
         }
 
 function populateUsers(res) {

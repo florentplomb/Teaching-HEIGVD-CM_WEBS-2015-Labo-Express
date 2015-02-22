@@ -1,10 +1,10 @@
 var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
-var TagSchema = new Schema({
-  desc: String,
-  date: Date
-  
+var GeoDataSchema = new Schema({
+  lg: String,
+  lat: String
+
 });
 
 
@@ -24,9 +24,10 @@ var TagSchema = new Schema({
 //	delete ret['__v'];
 //}
 
+GeoDataSchema.virtual('date')
+  .get(function(){
+    return this._id.getTimestamp();
+  });
 
-
-mongoose.model('Tag', TagSchema);
-
-
+mongoose.model('GeoData', GeoDataSchema);
 

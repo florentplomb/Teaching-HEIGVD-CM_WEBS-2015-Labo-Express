@@ -4,12 +4,13 @@ var mongoose = require('mongoose'),
 var IssueSchema = new Schema({
                 status: String,
                 desc: String,
-                date: Date,
-                lg: String,
-                lat: String,
                 user:{type:Schema.Types.ObjectId, ref: "User"},
                 tag:[{type:Schema.Types.ObjectId, ref: "Tag"}],
-                issueType:[{type:Schema.Types.ObjectId, ref: "IssueType"}],       
+                issueType:[{type:Schema.Types.ObjectId, ref: "IssueType"}],  
+                geoData:{
+                            lg: Number,
+                            lat:  Number
+                          },
                 comment:[{type:Schema.Types.ObjectId, ref: "Comment"}]
 	
 });
