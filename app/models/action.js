@@ -2,8 +2,9 @@ var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
 var ActionSchema = new Schema({
-    type:{type:Schema.Types.ObjectId, ref: "ActionType"},
-    date: Date,
+    test: String,
+    actionType:{type:Schema.Types.ObjectId, ref: "ActionType"},
+    date: {type: Date, default: '12/10/2010' },
     desc: String,
     user:{type:Schema.Types.ObjectId, ref: "User"}
 });
@@ -24,6 +25,7 @@ var ActionSchema = new Schema({
 //	delete ret['_id'];
 //	delete ret['__v'];
 //}
+
 
 
 

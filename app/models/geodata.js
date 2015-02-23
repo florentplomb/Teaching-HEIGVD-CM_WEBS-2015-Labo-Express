@@ -24,10 +24,5 @@ var GeoDataSchema = new Schema({
 //	delete ret['__v'];
 //}
 
-GeoDataSchema.virtual('date')
-  .get(function(){
-    return this._id.getTimestamp();
-  });
-
 mongoose.model('GeoData', GeoDataSchema);
 

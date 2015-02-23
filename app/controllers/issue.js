@@ -7,7 +7,9 @@ var
         IssueType = mongoose.model('IssueType'),
         User = mongoose.model('User'),
         GeoData = mongoose.model('GeoData'),
-        Tag = mongoose.model('Tag');
+        Tag = mongoose.model('Tag'),
+        Action = mongoose.model("Action"),
+        ActionType = mongoose.model("ActionType");
 
 
 // Action = mongoose.model('Action'); Peut-Ãªtre besoins pour issuse/id/action ???
@@ -19,6 +21,7 @@ module.exports = function (app) {
 function convertMongoIssue(issue) {
     //return user.toObject({ transform: true })
     return {
+        id: issue.id,
         tag: issue.tag,
         status: issue.status,
         desc: issue.desc,
@@ -27,6 +30,20 @@ function convertMongoIssue(issue) {
         issueType: issue.issueType,
         geoData: issue.geoData,
         comment: issue.comment
+    }
+}
+
+function convertMongoAction(action) {
+    //return user.toObject({ transform: true })
+    return {
+            id:action.id,
+            actionType: action.actionType,
+            desc: action.desc,
+            user: action.user
+            
+            
+    
+      
     }
 }
 
@@ -85,7 +102,7 @@ router.route('/:id')
                 })
             
          // Specific Issue update 
-         // Utile de tester si une valeur n'est pas puté , on prend l'ancienne valeur?
+         // Utile de tester si une valeur n'est pas putï¿½ , on prend l'ancienne valeur?
 
         .put(function (req, res, next) {
             Issue.findById(req.params.id, function (err, issue) {
@@ -114,13 +131,13 @@ router.route('/:id/action')
 
         .post(function (req, res, next) {
             var action = new Action({
-                type: req.body.type,
-                date: req.body.date,
-                desc: req.body.desc,
-                empl: req.body.empl
+              
+                user: req.body.userId,
+                desc : req.body.desc,
+                actionType:req.body.actionTypeId 
 
             });
-
+            console.log(action);
             action.save(function (err, actionSaved) {
                 res.status(201).json(convertMongoAction(actionSaved));
             });

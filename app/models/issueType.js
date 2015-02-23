@@ -24,10 +24,7 @@ var IssueTypeSchema = new Schema({
 //	delete ret['__v'];
 //}
 
-IssueTypeSchema.virtual('date')
-  .get(function(){
-    return this._id.getTimestamp();
-  });
+
 
 mongoose.model('IssueType', IssueTypeSchema);
 

@@ -4,6 +4,7 @@ var mongoose = require('mongoose'),
 var IssueSchema = new Schema({
                 status: String,
                 desc: String,
+                date: {type: Date, default: Date.now},
                 user:{type:Schema.Types.ObjectId, ref: "User"},
                 tag:[{type:Schema.Types.ObjectId, ref: "Tag"}],
                 issueType:[{type:Schema.Types.ObjectId, ref: "IssueType"}],  
