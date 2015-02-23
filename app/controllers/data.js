@@ -4,10 +4,10 @@ var
   router = express.Router(),
   mongoose = require('mongoose'),
 	User = mongoose.model('User'),
-	IssueType = mongoose.model('IssueType');
-        Comment = mongoose.model('Comment');
-        Tag = mongoose.model('Tag');
-
+	IssueType = mongoose.model('IssueType'),
+        Comment = mongoose.model('Comment'),
+        Tag = mongoose.model('Tag'),
+        ActionType = mongoose.model('ActionType');
 
 module.exports = function (app) {
   app.use('/api/data', router);
@@ -65,10 +65,14 @@ var shortnames = [
 	'racist graffiti',
 	'dangerous population'
 ];
+var actionType = [
+	'AddComment',
+	'ChangeStatus'	
+];
 
 
-var start = 2000-01-01;
-var end = 2015-01-01;
+var start = new Date(2000,01,01);
+var end = new Date(2015,01,01);
 var users = null;
 var citizen = null;
 var staff = null;
@@ -90,6 +94,15 @@ function generateTags() {
 	var data = [];
 	for (var i = 0; i < randomInt(1, 10); i++) {
 		data.push(tags[randomInt(0, tags.length)]);
+	}
+
+	return _.uniq(data);
+}
+
+function generateActionType() {
+	var data = [];
+	for (var i = 0; i < randomInt(1, 10); i++) {
+		data.push(actionType[randomInt(0, actionType.length)]);
 	}
 
 	return _.uniq(data);
@@ -136,13 +149,29 @@ function populateComment(res) {
 	});
 }
 
+function populateActionType(res) {
+	var data = [];
+	for (var i = 0; i < 15; i++) {
+		data.push({
+			 
+			type: actionType[randomInt(0, actionType.length)],
+                        desc: descriptionsAndComments[randomInt(0, descriptionsAndComments.length)]
+		});
+	}
+                ActionType.create(data, function(err) {
+		actiontype = Array.prototype.slice.call(arguments, 1);
+	
+		res.status(200).end();
+        
+        });
+        }
 function populateTag(res) {
 	var data = [];
 	for (var i = 0; i < 15; i++) {
 		data.push({
 			 
 			desc: generateTags(),
-                        date: randomDate(new Date(2000,01,01),new Date(2015,01,01))
+                        date: randomDate(start,end)
 		});
 	}
                 Tag.create(data, function(err) {
@@ -152,7 +181,7 @@ function populateTag(res) {
         
         });
         }
-
+        
 function populateUsers(res) {
 	var data = [];
 	for (var i = 0; i < 15; i++) {
@@ -182,8 +211,7 @@ function populateUsers(res) {
 			return _.contains(user.roles, 'staff');
 		});
 
-		// TODO: Call other generators as Mongoose is ASYNC and requires callbacks
-		populateIssueTypes(res);
+	
 	});
 };
 
@@ -221,6 +249,13 @@ router.route('/populatetag')
 	.post(function(req, res, next) {
 		Tag.find().remove(function(err) {
                 populateTag(res);
+		});
+
+	})
+router.route('/populactiontype')
+	.post(function(req, res, next) {
+		ActionType.find().remove(function(err) {
+                populateActionType(res);
 		});
 
 	})

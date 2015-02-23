@@ -4,7 +4,7 @@ var
   router = express.Router(),
   mongoose = require('mongoose'),
   IssueType = mongoose.model('IssueType');
-
+  
 module.exports = function (app) {
   app.use('/api/issuetypes', router);
 };
@@ -59,7 +59,9 @@ router.route('/:id')
 	})
 
 	.delete(function(req, res, next) {
+    
 		IssueType.findByIdAndRemove(req.params.id, function(err) {
 			res.status(204).end();
-		});
+		
 	});
+    });
