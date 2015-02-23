@@ -2,9 +2,7 @@ var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
 var TagSchema = new Schema({
-  desc: String,
-  date: Date
-  
+  desc: String
 });
 
 

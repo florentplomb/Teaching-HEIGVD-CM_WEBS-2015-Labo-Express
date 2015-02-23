@@ -36,15 +36,12 @@ function convertMongoIssue(issue) {
 function convertMongoAction(action) {
     //return user.toObject({ transform: true })
     return {
-            id:action.id,
-            actionType: action.actionType,
-            desc: action.desc,
-            user: action.user
-            
-            
-    
-      
-    }
+        id: action.id,
+        actionType: action.actionType,
+        desc: action.desc,
+        user: action.user
+
+    };
 }
 
 router.route('/')
@@ -88,10 +85,10 @@ router.route('/')
 
 router.route('/:id')
 
-            .get(function (req, res, next) {
-                
-            Issue.findById(req.params.id) 
-            
+        .get(function (req, res, next) {
+
+            Issue.findById(req.params.id)
+
                     .populate('tag user issueType comment ')
                     .exec(function (err, issue) {
                         if (err)
@@ -99,10 +96,10 @@ router.route('/:id')
                         res.json(convertMongoIssue(issue));
                     });
 
-                })
-            
-         // Specific Issue update 
-         // Utile de tester si une valeur n'est pas put� , on prend l'ancienne valeur?
+        })
+
+        // Specific Issue update 
+        // Utile de tester si une valeur n'est pas put� , on prend l'ancienne valeur?
 
         .put(function (req, res, next) {
             Issue.findById(req.params.id, function (err, issue) {
@@ -131,13 +128,25 @@ router.route('/:id/action')
 
         .post(function (req, res, next) {
             var action = new Action({
-              
                 user: req.body.userId,
-                desc : req.body.desc,
-                actionType:req.body.actionTypeId 
+                desc: req.body.desc,
+                actionType: req.body.actionTypeId
 
             });
-            console.log(action);
+            
+            ActionType.findById(action.actionType, function (err, actionType) {
+                 if (err) {
+                res.status(204).end();
+            }
+            else {
+               
+              var issueId = req.params.id ;
+                    actionOnIssue(actionType,issueId);
+            }
+                
+            });
+            
+            
             action.save(function (err, actionSaved) {
                 res.status(201).json(convertMongoAction(actionSaved));
             });
@@ -148,3 +157,19 @@ router.route('/:id/action')
                 res.json(convertMongoAction(action));
             });
         });
+function actionOnIssue(actionType,issueId){
+    
+    switch(actionType.code) {
+    case 0:
+     
+        console.log("code 0" + issueId);
+        break;
+    case 1:
+        onsole.log("code 1" + issueId);
+        break;
+
+}
+    
+    
+    
+}

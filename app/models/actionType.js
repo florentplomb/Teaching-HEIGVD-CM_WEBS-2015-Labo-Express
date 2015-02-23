@@ -1,7 +1,11 @@
 var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
+  
+  // Action type correspond au type d'action effectuée sur une issue
+  // code : chaque type correspond à un code ( 0 : addComment , 1 : changeStatus ...)
 
 var ActionTypeSchema = new Schema({
+    code : Number, 
     type: String,
     desc: String
 });
