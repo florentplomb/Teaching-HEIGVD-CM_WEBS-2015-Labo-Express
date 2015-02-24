@@ -9,7 +9,8 @@ var
         GeoData = mongoose.model('GeoData'),
         Tag = mongoose.model('Tag'),
         Action = mongoose.model("Action"),
-        ActionType = mongoose.model("ActionType");
+        ActionType = mongoose.model("ActionType"),
+        Comment = mongoose.model("Comment");
 
 
 // Action = mongoose.model('Action'); Peut-être besoins pour issuse/id/action ???
@@ -20,6 +21,7 @@ module.exports = function (app) {
 
 function convertMongoIssue(issue) {
     //return user.toObject({ transform: true })
+
     return {
         id: issue.id,
         tag: issue.tag,
@@ -130,46 +132,122 @@ router.route('/:id/action')
             var action = new Action({
                 user: req.body.userId,
                 desc: req.body.desc,
-                actionType: req.body.actionTypeId
+                actionType: req.body.actionTypeId});
 
-            });
-            
-            ActionType.findById(action.actionType, function (err, actionType) {
-                 if (err) {
-                res.status(204).end();
-            }
-            else {
-               
-              var issueId = req.params.id ;
-                    actionOnIssue(actionType,issueId);
-            }
                 
-            });
+            var issueId = req.params.id;
             
+            actionOnIssue(action, issueId,res);
             
-            action.save(function (err, actionSaved) {
-                res.status(201).json(convertMongoAction(actionSaved));
+
+                        action.save(function (err, actionSaved) {
+              //  res.status(201).json(convertMongoAction(actionSaved));
             });
         })
+        
 
-        .get(function (req, res, next) {
-            Action.findById(req.params.id, function (err, action) {
-                res.json(convertMongoAction(action));
+
+
+//            ActionType.findById(action.actionType, function (err, actionType) {
+//        
+//                
+//            action.save(function (err, actionSaved) {
+//                res.status(201).json(convertMongoAction(actionSaved));
+//            });
+//        })
+
+//        .get(function (req, res, next) {
+//            Action.findById(req.params.id, function (err, action) {
+//                res.json(convertMongoAction(action));
+//            });
+//        });
+function actionOnIssue(action, issueId ,res) {
+
+    ActionType.findById(action.actionType, function (err, actionType) {
+        switch (actionType.code) {
+            case 0:
+
+                var comment = new Comment({
+                    user: action.user,
+                    content: action.desc
+         
+                         });
+                comment.save(function (err, commentSaved) {
+                            
+                if (err)
+                    return next(err);    
+                
+                    Issue.findById(issueId, function (err, issue) {
+                        
+                        if (err) {
+                            res.status(204).json("l'issue n'existe pas");
+                        }
+                        
+                      
+                        
+                        if (issue.comment === null) {
+                            
+                              comments.push(commentSaved.id);
+                        }
+                        else{
+                          var comments  =  issue.comment;
+                            comments.push(commentSaved.id);
+                            issue.comment = comments;
+                            
+                        }
+                        
+                
+
+                 
+
+                    issue.save(function (err, issueSaved) {
+                        
+                         res.json(convertMongoIssue(issue));
+
+
+                    });
+
+
+                });
+                
+                
+                               
             });
-        });
-function actionOnIssue(actionType,issueId){
-    
-    switch(actionType.code) {
-    case 0:
-     
-        console.log("code 0" + issueId);
-        break;
-    case 1:
-        onsole.log("code 1" + issueId);
-        break;
+
+
+               
+                
+               
+                
+
+//                console.log("code 0 " + issueId);
+//                Issue.findById(issueId, function (err, issue) {
+//
+//                    issue.comment = ["32423e2ed243"];
+//
+//                    issue.save(function (err, issueSaved) {
+//                        console.log(issue.comment);
+//                        (convertMongoIssue(issue));
+//
+//
+//                    });
+//
+//
+//                });
+                break;
+                
+                case 0:
+
+
+        }
+
+    });
+
 
 }
-    
-    
-    
-}
+;
+
+
+
+
+
