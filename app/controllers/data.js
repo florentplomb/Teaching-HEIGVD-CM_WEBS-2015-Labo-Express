@@ -258,7 +258,7 @@ router.route('/populatetag')
             });
 
         })
-router.route('/populactiontype')
+router.route('/populateactiontype')
         .post(function (req, res, next) {
             ActionType.find().remove(function (err) {
                 populateActionType(res);
