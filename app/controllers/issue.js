@@ -26,7 +26,7 @@ function next(err){
 
 function convertMongoIssue(issue) {
     //return user.toObject({ transform: true })
-    console.log(issue.user);
+    
     return {
         id: issue.id,
         tag: issue.tag,
@@ -36,7 +36,8 @@ function convertMongoIssue(issue) {
         user: issue.user,
         issueType: issue.issueType,
         geoData: issue.geoData,
-        comment: issue.comment
+        comment: issue.comment,
+        action:issue.action
     }
 }
 
@@ -51,11 +52,23 @@ function convertMongoAction(action) {
     };
 }
 
+
 router.route('/')
 
         .get(function (req, res, next) {
+             
+            IssueType.findById(req.query.filterType, function (err ,issueType) {
+                if (issueType != null) {
+                    console.log("diff de null")
+                }
+                
+                else{
+                    console.log("null")
+                }            })
+             
 
-            Issue.find()
+            Issue.find() 
+                    .where('issueType', req.query.filterType)
                     .populate('tag user issueType comment ')
                     .exec(function (err, issues) {
                         if (err)
@@ -112,6 +125,7 @@ router.route('/')
 router.route('/:id')
 
         .get(function (req, res, next) {
+
 
             Issue.findById(req.params.id)
                     .populate('tag user issueType comment ')
@@ -181,15 +195,38 @@ router.route('/:id')
         });
 
 router.route('/:id/action')
+        
+        .get(function (req, res, next) {
+
+            Action.find()
+                    .populate('issue actionType')
+                    .where( 'issue' , req.params.id)
+                    .exec(function (err, issues) {
+                        if (err)
+                        {
+                            return next(err); // je dois la crÃ©e ma fonction next right?
+                        }
+                        if (issues === null) {
+                            return res.json({
+                                code: 204,
+                                message: "Issues is Empty"
+                            }).end();
+                        }
+                        res.json(_.map(issues, function (action) {
+
+                            return convertMongoAction(action);
+                        }));
+                    });
+
+
+        })
 
         .post(function (req, res, next) {
             var action = new Action({
                 user: req.body.userId,
                 desc: req.body.desc,
-                actionType: req.body.actionTypeId});
-
-            var issueId = req.params.id;
-            actionOnIssue(action, issueId, res);
+                actionType: req.body.actionTypeId,
+                issue:req.params.id});         
 
             action.save(function (err, actionSaved,next) {
                 if (err)
@@ -202,8 +239,11 @@ router.route('/:id/action')
                         message: "action not save"
                     }).end();
                 }
-                //    res.json(convertMongoAction(actionSaved)); 
+
+                 actionOnIssue(actionSaved, req.params.id, res);
+               
             });
+           
         })
 
 
@@ -256,16 +296,10 @@ function actionOnIssue(action, issueId, res) {
                                 message: "Issue is empty"
                             }).end();
                         }
-
-                        if (issue.comment === null) {
-
-                            comments.push(commentSaved.id);
-                        }
-                        else {
-                            var comments = issue.comment;
-                            comments.push(commentSaved.id);
-                            issue.comment = comments;
-                        }
+                           
+                            issue.comment.push(commentSaved.id);
+                            issue.action.push(action.id)
+                            
 
                         issue.save(function (err, issueSaved,next) {
 
@@ -300,6 +334,7 @@ function actionOnIssue(action, issueId, res) {
                         }
                         
                         issue.status = action.desc;
+                        issue.action.push(action.id)
                         
                          issue.save(function (err, issueSaved, next) {
 

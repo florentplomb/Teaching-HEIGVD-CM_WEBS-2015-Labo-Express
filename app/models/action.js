@@ -6,7 +6,8 @@ var ActionSchema = new Schema({
     actionType:{type:Schema.Types.ObjectId, ref: "ActionType"},
     date: {type: Date, default: Date.now },
     desc: String,
-    user:{type:Schema.Types.ObjectId, ref: "User"}
+    user:{type:Schema.Types.ObjectId, ref: "User"},
+    issue:{type:Schema.Types.ObjectId, ref: "Issue"}
 });
 
 

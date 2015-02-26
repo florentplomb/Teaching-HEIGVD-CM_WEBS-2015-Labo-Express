@@ -12,7 +12,8 @@ var IssueSchema = new Schema({
                             lg: Number,
                             lat:  Number
                           },
-                comment:[{type:Schema.Types.ObjectId, ref: "Comment"}]
+                comment:[{type:Schema.Types.ObjectId, ref: "Comment"}],
+                action:[{type:Schema.Types.ObjectId, ref: "Action"}]
 	
 });
 
