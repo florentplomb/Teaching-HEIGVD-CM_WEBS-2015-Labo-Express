@@ -1,16 +1,16 @@
 var
-        _ = require('underscore'),
-        express = require('express'),
-        router = express.Router(),
-        mongoose = require('mongoose'),
-        Issue = mongoose.model('Issue'),
-        IssueType = mongoose.model('IssueType'),
-        User = mongoose.model('User'),
-        GeoData = mongoose.model('GeoData'),
-        Tag = mongoose.model('Tag'),
-        Action = mongoose.model("Action"),
-        ActionType = mongoose.model("ActionType"),
-        Comment = mongoose.model("Comment");
+_ = require('underscore'),
+express = require('express'),
+router = express.Router(),
+mongoose = require('mongoose'),
+Issue = mongoose.model('Issue'),
+IssueType = mongoose.model('IssueType'),
+User = mongoose.model('User'),
+GeoData = mongoose.model('GeoData'),
+Tag = mongoose.model('Tag'),
+Action = mongoose.model("Action"),
+ActionType = mongoose.model("ActionType"),
+Comment = mongoose.model("Comment");
 
 
 // Action = mongoose.model('Action'); Peut-Ãªtre besoins pour issuse/id/action ???
@@ -55,24 +55,29 @@ function convertMongoAction(action) {
 
 router.route('/')
 
-        .get(function (req, res, next) {
-             
-            IssueType.findById(req.query.filterType, function (err ,issueType) {
-                if (issueType != null) {
-                    console.log("diff de null")
-                }
-                
-                else{
-                    console.log("null")
-                }            })
-             
+.get(function (req, res, next) {
 
-            Issue.find() 
-                    .where('issueType', req.query.filterType)
-                    .populate('tag user issueType comment ')
-                    .exec(function (err, issues) {
-                        if (err)
-                        {
+    var query
+    var type = req.query.type
+    var dateStart = new Date(req.query.dateStart)
+    var dateEnd = new Date(req.query.dateEnd)
+
+    //Model.find({"date": {'$gte': new Date('3/1/2014'), '$lt': new Date('3/16/2014')}}, callback);
+
+
+    if (type) {
+    query = ".and({issueType:"+type+"})"    
+    }
+
+    if(dateStart){
+        query = query+"and({'date': {'$gte': new Date('3/1/2014'), '$lt': new Date('3/16/2014')}}"
+    }
+    
+        Issue.find()
+        .and({"date": {'$gte': new Date('01/12/2015')}})
+        .exec(function (err, issues) {
+            if (err)
+            {
                             return next(err); // je dois la crÃ©e ma fonction next right?
                         }
                         if (issues === null) {
@@ -85,30 +90,79 @@ router.route('/')
 
                             return convertMongoIssue(issue);
                         }));
-                    });
+    })
+
+ //    if (req.query.filterType != undefined) {
+ //        Issue.find() 
+ //        .where('issueType', req.query.filterType).and('status' ,'create')
+ //        .populate('tag user issueType comment ')
+ //        .exec(function (err, issues) {
+ //            if (err)
+ //            {
+ //                            return next(err); // je dois la crÃ©e ma fonction next right?
+ //                        }
+ //                        if (issues === null) {
+ //                            return res.json({
+ //                                code: 204,
+ //                                message: "Issues is Empty"
+ //                            }).end();
+ //                        }
+ //                        res.json(_.map(issues, function (issue) {
+
+ //                            return convertMongoIssue(issue);
+ //                        }));
+
+ //                    })
+ //    }
+
+ //    else{
+ //     Issue.find() 
+
+ //     .populate('tag user issueType comment ')
+ //     .exec(function (err, issues) {
+ //        if (err)
+ //        {
+ //                            return next(err); // je dois la crÃ©e ma fonction next right?
+ //                        }
+ //                        if (issues === null) {
+ //                            return res.json({
+ //                                code: 204,
+ //                                message: "Issues is Empty"
+ //                            }).end();
+ //                        }
+ //                        res.json(_.map(issues, function (issue) {
+
+ //                            return convertMongoIssue(issue);
+ //                        }));
+
+ //                    })
+
+ // }
+
+})
 
 
-        })
-
-        .post(function (req, res, next) {
-            
-        
-            
-            var issue = new Issue({
-                tag: req.body.tag,
-                status: req.body.status,
-                desc: req.body.desc,
-                geoData: req.body.geoData,
-                user: req.body.userId,
-                issueType: req.body.issueTypeId
-                
-
-            });
 
 
-            issue.save(function (err, issueSaved) {
-                if (err)
-                {
+.post(function (req, res, next) {
+
+
+
+    var issue = new Issue({
+        tag: req.body.tag,
+        status: req.body.status,
+        desc: req.body.desc,
+        geoData: req.body.geoData,
+        user: req.body.userId,
+        issueType: req.body.issueTypeId
+
+
+    });
+
+
+    issue.save(function (err, issueSaved) {
+        if (err)
+        {
                     return next(err); // je dois la crÃ©e ma fonction next right?
                 }
                 if (issueSaved === null) {
@@ -120,18 +174,18 @@ router.route('/')
                 res.status(201).json(convertMongoIssue(issueSaved));
 
             });
-        });
+});
 
 router.route('/:id')
 
-        .get(function (req, res, next) {
+.get(function (req, res, next) {
 
 
-            Issue.findById(req.params.id)
-                    .populate('tag user issueType comment ')
-                    .exec(function (err, issue) {
-                        if (err)
-                        {
+    Issue.findById(req.params.id)
+    .populate('tag user issueType comment ')
+    .exec(function (err, issue) {
+        if (err)
+        {
                             return next(err); // je dois la crÃ©e ma fonction next right?
                         }
                         if (issue === null) {
@@ -144,7 +198,7 @@ router.route('/:id')
                         res.json(convertMongoIssue(issue));
                     });
 
-        })
+})
 
         // Specific Issue update 
 
@@ -182,28 +236,28 @@ router.route('/:id')
                     res.json(convertMongoIssue(issueSaved));
                 });
             });
-        })
+})
 
-        .delete(function (req, res) {
-            Issue.findByIdAndRemove(req.params.id, function (err , next) {
-                if (err)
-                {
+.delete(function (req, res) {
+    Issue.findByIdAndRemove(req.params.id, function (err , next) {
+        if (err)
+        {
                     return next(err); // je dois la crÃ©e ma fonction next right?
                 }
                 res.status(204).end();
             });
-        });
+});
 
 router.route('/:id/action')
-        
-        .get(function (req, res, next) {
 
-            Action.find()
-                    .populate('issue actionType')
-                    .where( 'issue' , req.params.id)
-                    .exec(function (err, issues) {
-                        if (err)
-                        {
+.get(function (req, res, next) {
+
+    Action.find()
+    .populate('issue actionType')
+    .where( 'issue' , req.params.id)
+    .exec(function (err, issues) {
+        if (err)
+        {
                             return next(err); // je dois la crÃ©e ma fonction next right?
                         }
                         if (issues === null) {
@@ -219,18 +273,18 @@ router.route('/:id/action')
                     });
 
 
-        })
+})
 
-        .post(function (req, res, next) {
-            var action = new Action({
-                user: req.body.userId,
-                desc: req.body.desc,
-                actionType: req.body.actionTypeId,
-                issue:req.params.id});         
+.post(function (req, res, next) {
+    var action = new Action({
+        user: req.body.userId,
+        desc: req.body.desc,
+        actionType: req.body.actionTypeId,
+        issue:req.params.id});         
 
-            action.save(function (err, actionSaved,next) {
-                if (err)
-                {
+    action.save(function (err, actionSaved,next) {
+        if (err)
+        {
                     return next(err); // je dois la crÃ©e ma fonction next right?
                 }
                 if (actionSaved === null) {
@@ -240,17 +294,17 @@ router.route('/:id/action')
                     }).end();
                 }
 
-                 actionOnIssue(actionSaved, req.params.id, res);
-               
+                actionOnIssue(actionSaved, req.params.id, res);
+
             });
-           
-        })
+
+})
 
 
 function actionOnIssue(action, issueId, res) {
 
     ActionType.findById(action.actionType, function (err, actionType, next) {
-    
+
 
         if (err)
         {
@@ -266,15 +320,15 @@ function actionOnIssue(action, issueId, res) {
         switch (actionType.code) {
             case 0: // if code 0 , it's a action to add comment
 
-                var comment = new Comment({
-                    user: action.user,
-                    content: action.desc
+            var comment = new Comment({
+                user: action.user,
+                content: action.desc
 
-                });
-                comment.save(function (err, commentSaved ,next) {
+            });
+            comment.save(function (err, commentSaved ,next) {
 
-                    if (err)
-                    {
+                if (err)
+                {
                         return next(err); // je dois la crÃ©e ma fonction next right?
                     }
                     if (commentSaved === null) {
@@ -296,10 +350,10 @@ function actionOnIssue(action, issueId, res) {
                                 message: "Issue is empty"
                             }).end();
                         }
-                           
-                            issue.comment.push(commentSaved.id);
-                            issue.action.push(action.id)
-                            
+
+                        issue.comment.push(commentSaved.id);
+                        issue.action.push(action.id)
+
 
                         issue.save(function (err, issueSaved,next) {
 
@@ -318,46 +372,46 @@ function actionOnIssue(action, issueId, res) {
 
                         });
                     });
-                });
-                break;
-            case 1 :
-             
-              Issue.findById(issueId, function (err, issue,next) {
-                   if (err) {
-                            return next(err) 
-                        };                       
-                        if (issue === null) {
-                            return res.json({
-                                code: 204,
-                                message: "Issue is empty"
-                            }).end();
-                        }
-                        
-                        issue.status = action.desc;
-                        issue.action.push(action.id)
-                        
-                         issue.save(function (err, issueSaved, next) {
+});
+break;
+case 1 :
 
-                            if (err)
-                            {
-                                return next(err); 
-                            }
-                            if (issueSaved === null) {
-                                return res.json({
-                                    code: 204,
-                                    message: "Issue not save"
-                                }).end();
-                            }
+Issue.findById(issueId, function (err, issue,next) {
+ if (err) {
+    return next(err) 
+};                       
+if (issue === null) {
+    return res.json({
+        code: 204,
+        message: "Issue is empty"
+    }).end();
+}
 
-                            res.json(convertMongoIssue(issueSaved));
+issue.status = action.desc;
+issue.action.push(action.id)
 
-                        });
+issue.save(function (err, issueSaved, next) {
 
-              });
- 
-
-
-        }
-
+    if (err)
+    {
+        return next(err); 
     }
-    )};
+    if (issueSaved === null) {
+        return res.json({
+            code: 204,
+            message: "Issue not save"
+        }).end();
+    }
+
+    res.json(convertMongoIssue(issueSaved));
+
+});
+
+});
+
+
+
+}
+
+}
+)};
