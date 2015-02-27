@@ -91,7 +91,7 @@ if (req.query.status) {
      status = {'status': issuestatus}      
      }
 
-    Issue.find()
+Issue.find()
 
   .and(dateStart)
   .and(dateEnd)
