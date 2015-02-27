@@ -57,24 +57,49 @@ router.route('/')
 
 .get(function (req, res, next) {
 
-    var query
-    var type = req.query.type
-    var dateStart = new Date(req.query.dateStart)
-    var dateEnd = new Date(req.query.dateEnd)
+    var type,dateStart,dateEnd,date,status = true
+
+     var issuetype = req.query.type
+     var date1 = new Date(req.query.date1)
+     var date2 = new Date(req.query.date2)
+     var issuestatus = req.query.status
 
     //Model.find({"date": {'$gte': new Date('3/1/2014'), '$lt': new Date('3/16/2014')}}, callback);
 
 
-    if (type) {
-    query = ".and({issueType:"+type+"})"    
+
+    if (req.query.date1 && req.query.date2) {
+
+        date = {"date": {'$gte': date1, '$lt': date2}}
+        
     }
 
-    if(dateStart){
-        query = query+"and({'date': {'$gte': new Date('3/1/2014'), '$lt': new Date('3/16/2014')}}"
+    else if (req.query.date1){
+       
+        dateStart = {'date': {'$gte': date1 }}
     }
-    
-        Issue.find()
-        .and({"date": {'$gte': new Date('01/12/2015')}})
+    else if (req.query.date2)
+    {
+        dateEnd = {'date': {'$lt': date2 }}
+    }
+
+     if (req.query.type) {
+     type = {'issueType': issuetype}      
+     }
+
+if (req.query.status) {
+     status = {'status': issuestatus}      
+     }
+
+    Issue.find()
+
+  .and(dateStart)
+  .and(dateEnd)
+  .and(date)
+  .and(type)
+  .and(status)
+
+
         .exec(function (err, issues) {
             if (err)
             {
@@ -92,52 +117,7 @@ router.route('/')
                         }));
     })
 
- //    if (req.query.filterType != undefined) {
- //        Issue.find() 
- //        .where('issueType', req.query.filterType).and('status' ,'create')
- //        .populate('tag user issueType comment ')
- //        .exec(function (err, issues) {
- //            if (err)
- //            {
- //                            return next(err); // je dois la crÃ©e ma fonction next right?
- //                        }
- //                        if (issues === null) {
- //                            return res.json({
- //                                code: 204,
- //                                message: "Issues is Empty"
- //                            }).end();
- //                        }
- //                        res.json(_.map(issues, function (issue) {
-
- //                            return convertMongoIssue(issue);
- //                        }));
-
- //                    })
- //    }
-
- //    else{
- //     Issue.find() 
-
- //     .populate('tag user issueType comment ')
- //     .exec(function (err, issues) {
- //        if (err)
- //        {
- //                            return next(err); // je dois la crÃ©e ma fonction next right?
- //                        }
- //                        if (issues === null) {
- //                            return res.json({
- //                                code: 204,
- //                                message: "Issues is Empty"
- //                            }).end();
- //                        }
- //                        res.json(_.map(issues, function (issue) {
-
- //                            return convertMongoIssue(issue);
- //                        }));
-
- //                    })
-
- // }
+       
 
 })
 
