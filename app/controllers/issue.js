@@ -1,3 +1,5 @@
+// Issue controller : Ce controller gère les informations entre la base de données et les issues
+
 var
 _ = require('underscore'),
 express = require('express'),
@@ -13,7 +15,7 @@ ActionType = mongoose.model("ActionType"),
 Comment = mongoose.model("Comment");
 
 
-// Action = mongoose.model('Action'); Peut-Ãªtre besoins pour issuse/id/action ???
+
 
 module.exports = function (app) {
     app.use('/api/issues', router);
@@ -22,7 +24,7 @@ function next(err){
     return res.json(err).end();
 };
 
-
+// Retourne les infortmations d'une issue perssistante 
 
 function convertMongoIssue(issue) {
     //return user.toObject({ transform: true })
@@ -40,6 +42,7 @@ function convertMongoIssue(issue) {
         action:issue.action
     }
 }
+// Retourne les infortmations d'une action perssistante 
 
 function convertMongoAction(action) {
     //return user.toObject({ transform: true })
@@ -55,6 +58,10 @@ function convertMongoAction(action) {
 
 router.route('/')
 
+// Retourne les issues persistantes en fonction de différent parmatètre:
+// Le type , le status et la date de l'issue   
+
+
 .get(function (req, res, next) {
 
     var type,dateStart,dateEnd,date,status = true
@@ -63,8 +70,6 @@ router.route('/')
      var date1 = new Date(req.query.date1)
      var date2 = new Date(req.query.date2)
      var issuestatus = req.query.status
-
-    //Model.find({"date": {'$gte': new Date('3/1/2014'), '$lt': new Date('3/16/2014')}}, callback);
 
 
 
@@ -103,7 +108,7 @@ Issue.find()
         .exec(function (err, issues) {
             if (err)
             {
-                            return next(err); // je dois la crÃ©e ma fonction next right?
+                            return next(err); 
                         }
                         if (issues === null) {
                             return res.json({
@@ -121,7 +126,7 @@ Issue.find()
 
 })
 
-
+// Enregistre une issue selon les informations d'entrée
 
 
 .post(function (req, res, next) {
@@ -143,7 +148,7 @@ Issue.find()
     issue.save(function (err, issueSaved) {
         if (err)
         {
-                    return next(err); // je dois la crÃ©e ma fonction next right?
+                    return next(err); 
                 }
                 if (issueSaved === null) {
                     return res.json({
@@ -158,6 +163,8 @@ Issue.find()
 
 router.route('/:id')
 
+// Retourne une issues peristante spécifique 
+
 .get(function (req, res, next) {
 
 
@@ -166,7 +173,7 @@ router.route('/:id')
     .exec(function (err, issue) {
         if (err)
         {
-                            return next(err); // je dois la crÃ©e ma fonction next right?
+                            return next(err); 
                         }
                         if (issue === null) {
                             return res.json({
@@ -180,14 +187,13 @@ router.route('/:id')
 
 })
 
-        // Specific Issue update 
-
+ // Mise à jour  d'une issues peristante spécifique 
 
         .put(function (req, res, next) {
             Issue.findById(req.params.id, function (err, issue) {
 
                 if (err) {
-                    return next(err) // je dois la crÃ©e ma fonction next right?
+                    return next(err) 
                 }
                 ;
 
@@ -197,7 +203,6 @@ router.route('/:id')
                         message: "Issue is empty"
                     }).end();
                 }
-                // On ne laisse pas la possibilité de changer l'auteur , le type et le commentaire d'une issue.
                 issue.tag = req.body.tag;
                 issue.status = req.body.status;
                 issue.desc = req.body.desc;
@@ -205,7 +210,7 @@ router.route('/:id')
                 issue.save(function (err, issueSaved) {
                     if (err)
                     {
-                        return next(err); // je dois la crÃ©e ma fonction next right?
+                        return next(err); 
                     }
                     if (issueSaved === null) {
                         return res.json({
@@ -217,43 +222,50 @@ router.route('/:id')
                 });
             });
 })
+//Supprime une issue specifique
 
 .delete(function (req, res) {
     Issue.findByIdAndRemove(req.params.id, function (err , next) {
         if (err)
         {
-                    return next(err); // je dois la crÃ©e ma fonction next right?
+                    return next(err); 
                 }
                 res.status(204).end();
             });
 });
 
+
 router.route('/:id/action')
 
-.get(function (req, res, next) {
+// Retourne la liste des actions effectuees sur une issue specifique
 
-    Action.find()
-    .populate('issue actionType')
-    .where( 'issue' , req.params.id)
-    .exec(function (err, issues) {
-        if (err)
-        {
-                            return next(err); // je dois la crÃ©e ma fonction next right?
-                        }
-                        if (issues === null) {
-                            return res.json({
-                                code: 204,
-                                message: "Issues is Empty"
-                            }).end();
-                        }
-                        res.json(_.map(issues, function (action) {
+// .get(function (req, res, next) {
 
-                            return convertMongoAction(action);
-                        }));
-                    });
+// //     Action.find()
+// //     .populate('issue actionType')
+// //     .where( 'issue' , req.params.id)
+// //     .exec(function (err, issues) {
+// //         if (err)
+// //         {
+// //                             return next(err); 
+// //                         if (issues === null) {
+// //                             return res.json({
+// //                                 code: 204,
+// //                                 message: "Issues is Empty"
+// //                             }).end();
+// //                         }
+// //                         res.json(_.map(issues, function (action) {
+
+// //                             return convertMongoAction(action);
+// //                         }));
+// //                     })
 
 
-})
+// // })
+//  });
+
+// Cére une nouvelle action persitante sur une issues :
+
 
 .post(function (req, res, next) {
     var action = new Action({
@@ -265,7 +277,7 @@ router.route('/:id/action')
     action.save(function (err, actionSaved,next) {
         if (err)
         {
-                    return next(err); // je dois la crÃ©e ma fonction next right?
+                    return next(err); 
                 }
                 if (actionSaved === null) {
                     return res.json({
@@ -280,6 +292,11 @@ router.route('/:id/action')
 
 })
 
+// Determine l'action à effectue sur une issue:
+// -Ajouter une commentaire à une action
+// -Changer le status d'une issue
+// Params : -Action : l'action à effecuter
+//          -issueId : l'issueId sur laquelle l'action à lieu
 
 function actionOnIssue(action, issueId, res) {
 

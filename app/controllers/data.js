@@ -1,3 +1,5 @@
+// Data controller : Genère des data aléatoires exploitables pour tester l'application
+
 var
         _ = require('underscore'),
         express = require('express'),
@@ -12,6 +14,8 @@ var
 module.exports = function (app) {
     app.use('/api/data', router);
 };
+
+// fonction qui retourne des informations aléatoires
 
 function random(low, high) {
     return Math.random() * (high - low) + low;
@@ -85,10 +89,13 @@ var maxLat = 46.784234;
 var minLng = 6.622009;
 var maxLng = 6.651878;
 
+// Génère les différents rôles qu'un user peu avoir
+
 function generateRoles() {
     var roles = [['citizen'], ['staff'], ['citizen', 'staff']];
     return roles[randomInt(0, 3)];
 }
+// Génère des tags aléatoires
 
 function generateTags() {
     var data = [];
@@ -98,7 +105,7 @@ function generateTags() {
 
     return _.uniq(data);
 }
-
+// Génère des action types aléatoires
 function generateActionType() {
     var data = [];
     for (var i = 0; i < randomInt(1, 10); i++) {
@@ -107,9 +114,10 @@ function generateActionType() {
 
     return _.uniq(data);
 }
+// Enregistrement des issues type
 
 function populateIssueTypes(res) {
-    // TODO: Implement the issue type generation
+   
 
     var data = [];
     for (var i = 0; i < 10; i++) {
@@ -127,27 +135,7 @@ function populateIssueTypes(res) {
     });
 }
 
-function populateComment(res) {
-    // TODO: Implement the issue type generation
-
-    var data = [];
-    for (var i = 0; i < 10; i++) {
-        data.push({
-            // TODO: Implement the issuetype random generation
-            author: firstnames[randomInt(0, firstnames.length)] + " " + lastnames[randomInt(0, lastnames.length)],
-            content: descriptionsAndComments[randomInt(0, descriptionsAndComments.length)],
-            date: randomDate(new Date(2000, 01, 01), new Date(2015, 01, 01))
-
-        });
-
-    }
-
-    Comment.create(data, function (err) {
-        comment = Array.prototype.slice.call(arguments, 1);
-
-        res.status(200).end();
-    });
-}
+// Enregistrement des action types
 
 function populateActionType(res) {
     var data = [];
@@ -171,6 +159,9 @@ function populateActionType(res) {
 
     });
 }
+
+// Enregistrement des tags
+
 function populateTag(res) {
     var data = [];
     for (var i = 0; i < 15; i++) {
@@ -186,6 +177,9 @@ function populateTag(res) {
 
     });
 }
+
+
+// Enregistrement des users
 
 function populateUsers(res) {
     var data = [];

@@ -1,3 +1,5 @@
+// Users controller : Ce controller gère les informations entre la base de données et les users
+
 var
         _ = require('underscore'),
         express = require('express'),
@@ -45,6 +47,9 @@ function convertMongoIssue(issue) {
 
 
 router.route('/')
+
+// Retourne tous les users pérsistants
+
         .get(function (req, res, next) {
             User.find(function (err, users) {
                 if (err)
@@ -54,6 +59,7 @@ router.route('/')
                 }));
             });
         })
+// Sauvgarde un nouveau user
 
         .post(function (req, res, next) {
             var user = new User({
@@ -69,11 +75,15 @@ router.route('/')
         });
 
 router.route('/:id')
+
+// Retourne les informations d'un user pérsistant spécifique 
+
         .get(function (req, res, next) {
             User.findById(req.params.id, function (err, user) {
                 res.json(convertMongoUser(user));
             });
         })
+// Mises à jours des informations d'un user pérsistant spécifique 
 
         .put(function (req, res, next) {
             User.findById(req.params.id, function (err, user) {
@@ -87,11 +97,15 @@ router.route('/:id')
                 });
             });
         })
+// Supprime les informations d'un user pérsistant spécifique 
+
         .delete(function (req, res, next) {
             User.findByIdAndRemove(req.params.id, function (err) {
                     res.status(204).end();
             });
         });
+// Retourne toutes les issues crée par un utilisateur spécifique 
+
 router.route('/:id/issues')
          .get(function (req, res, next) {
 
