@@ -10,7 +10,7 @@ var config = {
     },
     port: 3000,
   //  db: 'mongodb://localhost/citizen-engagement-node-skeleton'
-  db: 'mongodb://ds049181.mongolab.com:49181/heroku_app34437077'
+  db: 'mongodb://localhost/citizen-engagement-node-skeleton'
   },
 
   test: {
