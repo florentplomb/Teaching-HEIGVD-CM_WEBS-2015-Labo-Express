@@ -1,4 +1,3 @@
-
 // Modele ActionType : défini le shchéma d'un action type pérsistante dans la base de données
 // Params //
 // code : défini un code pour chaque type d'action : chaque type correspond à un code ( 0 : addComment , 1 : changeStatus ...)

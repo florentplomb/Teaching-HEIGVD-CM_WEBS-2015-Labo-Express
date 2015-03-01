@@ -1,3 +1,6 @@
+
+# Smart City - Citizen Engagement -
+
 ## Etudiants
 
 Clélia Panchaud & Florent plomb 
@@ -11,10 +14,26 @@ Téléphone *024 557 63 30 | www.heig-vd.ch
 
 ## Our Choice
 
-We choose t
+NODE.JS !
 
+We chose to use Node Js for following reason :
 
-# Smart City - Citizen Engagement - Express Skeleton
+We have little experience in this language, and we want to find new opportunities.
+
+JavaScript has traditionally only run in the web browser, but recently there has been considerable interest in bringing it to the server side as well, thanks to the Node js.
+
+Tools and Node community is in expansion.
+
+It allows to set up a development environment for API-RESTFULL very quickly.
+
+The package management system NPM is fast, robust, and consistent. It does a great job at specifying and installing project dependencies.
+
+Using Node.js allows you to use the same language on the client, on the server, and in the database. You can keep your data in its native JSON format from browser to disk.
+
+If you're using an object database like Mongo, then you can extend JavaScript to the persistence layer as well.
+
+To finish :  Node is trendy at the moment. It is great to impress these friends in a discussion.
+ 
 
 ## Introduction
 
@@ -63,15 +82,46 @@ $> grunt
 
 The appliation is runing on `http://localhost:3000`. You should be able to access the following:
 
-### Data population
+### How to use API
 
-- POST /api/data/populate
+1. Populate DB
 
-### User resource
+-POST /api/data/populateuser
+-POST /api/data/populateissuetype
+-POST /api/data/populatetag
+-POST /api/data/populateactiontype
 
-- GET /api/users
-- POST /api/users
-- GET /api/users/{id}
-- PUT /api/users/{id}
-- DELETE /api/users/{id}
+2. Create an issue 
+
+- POST /api/issues
+
+Example data:
+{    
+        "status" : "created",
+        "desc": "A new issue ",            
+        "userId":"54e999763f45823810976be7",
+        "issueTypeId": ["54e74440a03a29e41dd7ac40","54e74440a03a29e41dd7ac41"],
+        "tag" :["54e730af7d49c0002325c66e","54e730af7d49c0002325c673"],    
+          "geoData":{"lg":"41.123213",
+            		 "lat": "7.623453323"}
+}
+
+3. Create an action an issue
+
+- POST /api/issues/{issueID}/action
+
+Example data :
+
+{                  
+        "actionTypeId": "54ec59f2c41943dc1460b221",            
+        "userId":"54e999763f45823810976be7",
+  		"desc"	:"Hello l'equipe voiçi le commentaire à ajouter à l'issue3"
+     
+}
+
+4. Now you can use all the route ( API REFRENCE ) in this documentation: https://github.com/florentplomb/Teaching-HEIGVD-CM_WEBS-2015-Labo-Doc.git
+
+
+
+
 

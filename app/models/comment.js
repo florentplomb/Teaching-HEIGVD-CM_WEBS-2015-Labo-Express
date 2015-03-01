@@ -1,4 +1,3 @@
-
 // Modele Comment : défini le shchéma d'un commentaire pérsistante dans la base de données
 // Params //
 // user : l'utilisateur qui post le commentaire
