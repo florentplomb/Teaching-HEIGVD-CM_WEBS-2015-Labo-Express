@@ -15,11 +15,15 @@ Téléphone *024 557 63 30 | www.heig-vd.ch
 
 ## API deployed on Heroku
 
+Documentation : http://pacific-sands-7883.herokuapp.com/
+
 Example route 
 
 - http://afternoon-woodland-9450.herokuapp.com/api/users
 
 - http://afternoon-woodland-9450.herokuapp.com/api/issue
+
+- http://afternoon-woodland-9450.herokuapp.com/api/issues?date2=%2201/01/2014%22
 
 ## Our Choice
 
