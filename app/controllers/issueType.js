@@ -1,3 +1,5 @@
+// IssueType controller : Ce controller gère les informations entre la base de données et les types d'issues
+
 var
 	_ = require('underscore'),
 	express = require('express'),
@@ -19,6 +21,8 @@ function convertMongoIssueType(issueType) {
 }
 
 router.route('/')
+
+// Retourne la liste des actions types
 	.get(function(req, res, next) {
 		IssueType.find(function (err, issueTypes) {
 		  if (err) return next(err);
@@ -27,7 +31,7 @@ router.route('/')
 			}));
 		});
 	})
-
+// Crée une nouveau action type
 	.post(function (req, res, next) {
 		var issueType = new IssueType({
 			name: req.body.name,
@@ -40,12 +44,13 @@ router.route('/')
 	});
 
 router.route('/:id')
+// Retourne un  actions types spécifique
 	.get(function(req, res, next) {
 		IssueType.findById(req.params.id, function(err, issueType) {
 			res.json(convertMongoIssueType(issueType));
 		});
 	})
-
+// Mise à jour d'un  actions types spécifique
 	.put(function(req, res, next) {
 		IssueType.findById(req.params.id, function(err, issueType) {
 			issueType.name = req.body.name;
@@ -57,7 +62,7 @@ router.route('/:id')
 			});
 		});
 	})
-
+// Suppression d'un  actions types spécifique
 	.delete(function(req, res, next) {
     
 		IssueType.findByIdAndRemove(req.params.id, function(err) {

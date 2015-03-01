@@ -1,3 +1,19 @@
+## Etudiants
+
+Clélia Panchaud & Florent plomb 
+COMEM MIT41 & MM41
+ 
+Haute Ecole d'Ingénierie et de Gestion du Canton de Vaud (HEIG-VD)
+Route de Cheseaux 1,
+Avenue des Sports 20
+1400 Yverdon-les-Bains
+Téléphone *024 557 63 30 | www.heig-vd.ch 
+
+## Our Choice
+
+We choose t
+
+
 # Smart City - Citizen Engagement - Express Skeleton
 
 ## Introduction
@@ -59,6 +75,3 @@ The appliation is runing on `http://localhost:3000`. You should be able to acces
 - PUT /api/users/{id}
 - DELETE /api/users/{id}
 
-## Etudiants
-
-Clélia Panchaud et Florent plomb

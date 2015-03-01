@@ -1,3 +1,16 @@
+// Modele Issue : défini le shchéma d'une action pérsistante dans la base de données
+// Params //
+// Status : défini le status d'une issue
+// date : la date de création
+// desc : la description de de l'issue
+// user : l'utilisateur qui crée l'issue
+// tag  : mot clé lié à l'issue
+// issueType: le type d'issue
+// geoData  : les coordonées de l'issues
+// comment  : les commentaire lié à l'issues
+// action  : les action effectuée sur l'issue
+
+
 var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
@@ -17,29 +30,6 @@ var IssueSchema = new Schema({
 	
 });
 
-//
-//Issue.pre('save', function(next) {
-//    this.updatedOn = new Date();
-//    next();
-//});
-    
-
-
-// Example of how we can use mongoose to transform data from the DB into
-// an object we can use. It's a sort of Entity <-> TO transformation
-
-//if (!UserSchema.options.toObject) UserSchema.options.toObject = {};
-//UserSchema.options.toObject.hide = '';
-//UserSchema.options.toObject.transform = function (doc, ret, options) {
-//  if (options.hide) {
-//    options.hide.split(' ').forEach(function (prop) {
-//      delete ret[prop];
-//    });
-//  }
-//	ret.id = ret._id;
-//	delete ret['_id'];
-//	delete ret['__v'];
-//}
 
 
 mongoose.model('Issue', IssueSchema);
