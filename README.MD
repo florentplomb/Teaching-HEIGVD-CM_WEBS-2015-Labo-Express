@@ -86,10 +86,10 @@ The appliation is runing on `http://localhost:3000`. You should be able to acces
 
 #### Populate DB 
 
--POST /api/data/populateuser
--POST /api/data/populateissuetype
--POST /api/data/populatetag
--POST /api/data/populateactiontype
+- POST /api/data/populateuser
+- POST /api/data/populateissuetype
+- POST /api/data/populatetag
+- POST /api/data/populateactiontype
 
 #### Create an issue 
 
