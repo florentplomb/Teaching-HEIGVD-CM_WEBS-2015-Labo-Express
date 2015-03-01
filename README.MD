@@ -1,7 +1,7 @@
 
 # Smart City - Citizen Engagement -
 
-## Etudiants
+## Students
 
 Clélia Panchaud & Florent plomb 
 COMEM MIT41 & MM41
@@ -11,6 +11,15 @@ Route de Cheseaux 1,
 Avenue des Sports 20
 1400 Yverdon-les-Bains
 Téléphone *024 557 63 30 | www.heig-vd.ch 
+
+
+## API deployed on Heroku
+
+Example route 
+
+- http://afternoon-woodland-9450.herokuapp.com/api/users
+
+- http://afternoon-woodland-9450.herokuapp.com/api/issue
 
 ## Our Choice
 
