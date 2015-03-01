@@ -82,16 +82,16 @@ $> grunt
 
 The appliation is runing on `http://localhost:3000`. You should be able to access the following:
 
-### How to use API
+## How to use API
 
-1. Populate DB
+#### Populate DB 
 
 -POST /api/data/populateuser
 -POST /api/data/populateissuetype
 -POST /api/data/populatetag
 -POST /api/data/populateactiontype
 
-2. Create an issue 
+#### Create an issue 
 
 - POST /api/issues
 
@@ -106,7 +106,7 @@ Example data:
             		 "lat": "7.623453323"}
 }
 
-3. Create an action an issue
+#### Create an action an issue 
 
 - POST /api/issues/{issueID}/action
 
@@ -119,7 +119,7 @@ Example data :
      
 }
 
-4. Now you can use all the route ( API REFRENCE ) in this documentation: https://github.com/florentplomb/Teaching-HEIGVD-CM_WEBS-2015-Labo-Doc.git
+#### Now you can use all the route ( API REFRENCE ) in this documentation: https://github.com/florentplomb/Teaching-HEIGVD-CM_WEBS-2015-Labo-Doc.git
 
 
 
