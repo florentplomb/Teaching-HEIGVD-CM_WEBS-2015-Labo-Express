@@ -1,5 +1,5 @@
 
-# Smart City - Citizen Engagement -
+# Smart City - Citizen Engagement - API
 
 ## Students
 
@@ -132,7 +132,7 @@ Example data :
      
 }
 
-#### Now you can use all the route ( API REFRENCE ) in this documentation: https://github.com/florentplomb/Teaching-HEIGVD-CM_WEBS-2015-Labo-Doc.git
+ Now you can use all the route ( API REFRENCE ) in this documentation: Documentation : http://pacific-sands-7883.herokuapp.com/
 
 
 
