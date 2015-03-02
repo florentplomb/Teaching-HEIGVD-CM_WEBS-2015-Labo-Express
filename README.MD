@@ -23,7 +23,7 @@ Example route
 
 - http://afternoon-woodland-9450.herokuapp.com/api/issue
 
-- http://afternoon-woodland-9450.herokuapp.com/api/issues?date2=%2201/01/2014%22
+- http://afternoon-woodland-9450.herokuapp.com/api/issues?dateEnd=01/01/2014
 
 ## Our Choice
 
