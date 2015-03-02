@@ -119,11 +119,11 @@
     if (req.query.status) {
          status = {'status': issuestatus}      
          }
-
+           
               
     Issue.find()
 
-      .and({'geoData.lg':{'$gte': geolgmin, '$lt': geolgmax}}) 
+      .and({'geoData.lg':{'$gte': geolgmin, '$lte': geolgmax}}) 
       .and({'geoData.lat':{'$gte': geolatmin,'$lte': geolatmax}})
       .and(dateStart)
       .and(dateEnd)
