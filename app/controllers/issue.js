@@ -62,11 +62,17 @@
     .get(function (req, res, next) {
 
         var type,dateStart,dateEnd,date,status = true
+        var geolgmax = 90
+        var geolatmax = 90
+        var geolgmin = -90
+        var geolatmin = -90
 
          var issuetype = req.query.type
          var date1 = new Date(req.query.date1)
          var date2 = new Date(req.query.date2)
          var issuestatus = req.query.status
+   
+        // Find between date
 
         if (req.query.date1 && req.query.date2) {
 
@@ -83,6 +89,29 @@
             dateEnd = {'date': {'$lt': date2 }}
         }
 
+        // Find a specific region 
+
+        if (req.query.geolatmin) {
+
+            geolatmin = req.query.geolatmin
+            
+        }
+        if(req.query.geolatmax) {
+
+            geolatmax = req.query.geolatmax }
+
+        if(req.query.geolgmin) {
+            geolgmin = req.query.geolgmin
+        }
+
+        if(req.query.geolgmax){
+            geolgmax = req.query.geolgmax
+
+        }
+    
+
+         // Find a specific type 
+
          if (req.query.type) {
          type = {'issueType': issuetype}      
          }
@@ -91,8 +120,11 @@
          status = {'status': issuestatus}      
          }
 
+              
     Issue.find()
 
+      .and({'geoData.lg':{'$gte': geolgmin, '$lt': geolgmax}}) 
+      .and({'geoData.lat':{'$gte': geolatmin,'$lte': geolatmax}})
       .and(dateStart)
       .and(dateEnd)
       .and(date)

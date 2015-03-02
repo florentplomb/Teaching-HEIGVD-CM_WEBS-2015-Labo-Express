@@ -21,10 +21,8 @@ var IssueSchema = new Schema({
                 user:{type:Schema.Types.ObjectId, ref: "User"},
                 tag:[{type:Schema.Types.ObjectId, ref: "Tag"}],
                 issueType:[{type:Schema.Types.ObjectId, ref: "IssueType"}],  
-                geoData:{
-                            lg: Number,
-                            lat:  Number
-                          },
+                geoData:{  lg: Number,
+                            lat:  Number},
                 comment:[{type:Schema.Types.ObjectId, ref: "Comment"}],
                 action:[{type:Schema.Types.ObjectId, ref: "Action"}]
 	

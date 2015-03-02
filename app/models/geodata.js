@@ -8,8 +8,8 @@ var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
 var GeoDataSchema = new Schema({
-  lg: String,
-  lat: String
+  lg: Number,
+  lat: Number
 
 });
 
