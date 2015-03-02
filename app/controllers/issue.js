@@ -68,8 +68,8 @@
         var geolatmin = -90
 
          var issuetype = req.query.type
-         var date1 = new Date(req.query.date1)
-         var date2 = new Date(req.query.date2)
+         var date1 = new Date(req.query.dateStart)
+         var date2 = new Date(req.query.dateEnd)
          var issuestatus = req.query.status
    
         // Find between date
@@ -80,11 +80,11 @@
             
         }
 
-        else if (req.query.date1){
+        else if (req.query.dateStart){
            
             dateStart = {'date': {'$gte': date1 }}
         }
-        else if (req.query.date2)
+        else if (req.query.dateEnd)
         {
             dateEnd = {'date': {'$lt': date2 }}
         }
