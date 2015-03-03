@@ -10,7 +10,7 @@ Haute Ecole d'Ingénierie et de Gestion du Canton de Vaud (HEIG-VD)
 Route de Cheseaux 1,
 Avenue des Sports 20
 1400 Yverdon-les-Bains
-Téléphone *024 557 63 30 | www.heig-vd.ch 
+Téléphone 024 557 63 30 | www.heig-vd.ch 
 
 
 ## API deployed on Heroku

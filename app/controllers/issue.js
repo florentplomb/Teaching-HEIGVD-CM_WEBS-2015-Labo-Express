@@ -160,7 +160,7 @@
 
 
 
-        var issue = new Issue({
+        var article = new Issue({
             tag: req.body.tag,
             status: req.body.status,
             desc: req.body.desc,
