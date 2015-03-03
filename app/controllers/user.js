@@ -81,8 +81,8 @@ router.route('/:id')
         .get(function (req, res, next) {
 
             User.findById(req.params.id, function (err, user) {
-                       if (err)
-                    return next(err);
+                if (err)
+                   { return next(err); }
                 res.json(convertMongoUser(user));
             });
         })
@@ -90,8 +90,8 @@ router.route('/:id')
 
         .put(function (req, res, next) {
             User.findById(req.params.id, function (err, user) {
-                       if (err)
-                    return next(err);
+                if (err)
+                  {  return next(err); }
                 user.firstname = req.body.firstname;
                 user.lastname = req.body.lastname;
                 user.phone = req.body.phone;
