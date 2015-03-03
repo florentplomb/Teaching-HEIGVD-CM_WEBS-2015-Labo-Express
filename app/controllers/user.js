@@ -81,8 +81,16 @@ router.route('/:id')
         .get(function (req, res, next) {
 
             User.findById(req.params.id, function (err, user) {
-                if (err)
-                   { return next(err); }
+                        if (err)
+            {
+                                return next(err); 
+                            }
+                            if (user === null) {
+                                return res.json({
+                                    code: 204,
+                                    message: "User doesn't exist"
+                                }).end();
+                            }
                 res.json(convertMongoUser(user));
             });
         })
